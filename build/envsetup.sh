@@ -82,7 +82,7 @@ function breakfast()
                 variant="userdebug"
             fi
 
-            lunch cos_$target-$variant
+            lunch simplix_$target-$variant
         fi
     fi
     return $?
@@ -93,7 +93,7 @@ alias bib=breakfast
 function eat()
 {
     if [ "$OUT" ] ; then
-        ZIPPATH=`ls -tr "$OUT"/Cosmic-OS*.zip | tail -1`
+        ZIPPATH=`ls -tr "$OUT"/Simplix*.zip | tail -1`
         if [ ! -f $ZIPPATH ] ; then
             echo "Nothing to eat"
             return 1
@@ -107,7 +107,7 @@ function eat()
             done
             echo "Device Found.."
         fi
-        if (adb shell getprop ro.cos.device | grep -q "$COS_BUILD"); then
+        if (adb shell getprop ro.cos.device | grep -q "$SIMPLIX_BUILD"); then
             # if adbd isn't root we can't write to /cache/recovery/
             adb root
             sleep 1
@@ -123,7 +123,7 @@ EOF
             fi
             rm /tmp/command
         else
-            echo "The connected device does not appear to be $COS_BUILD, run away!"
+            echo "The connected device does not appear to be $SIMPLIX_BUILD, run away!"
         fi
         return $?
     else
@@ -177,7 +177,7 @@ function installboot()
     sleep 1
     adb wait-for-online shell mount /system 2>&1 > /dev/null
     adb wait-for-online remount
-    if (adb shell getprop ro.cos.device | grep -q "$COS_BUILD");
+    if (adb shell getprop ro.cos.device | grep -q "$SIMPLIX_BUILD");
     then
         adb push $OUT/boot.img /cache/
         if [ -e "$OUT/system/lib/modules/*" ];
@@ -192,7 +192,7 @@ function installboot()
         adb shell rm -rf /cache/boot.img
         echo "Installation complete."
     else
-        echo "The connected device does not appear to be $COS_BUILD, run away!"
+        echo "The connected device does not appear to be $SIMPLIX_BUILD, run away!"
     fi
 }
 
@@ -226,14 +226,14 @@ function installrecovery()
     sleep 1
     adb wait-for-online shell mount /system 2>&1 >> /dev/null
     adb wait-for-online remount
-    if (adb shell getprop ro.cos.device | grep -q "$COS_BUILD");
+    if (adb shell getprop ro.cos.device | grep -q "$SIMPLIX_BUILD");
     then
         adb push $OUT/recovery.img /cache/
         adb shell dd if=/cache/recovery.img of=$PARTITION
         adb shell rm -rf /cache/recovery.img
         echo "Installation complete."
     else
-        echo "The connected device does not appear to be $COS_BUILD, run away!"
+        echo "The connected device does not appear to be $SIMPLIX_BUILD, run away!"
     fi
 }
 

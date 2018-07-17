@@ -54,13 +54,11 @@ PRODUCT_BOOT_JARS += \
 # Custom packages
 PRODUCT_PACKAGES += \
     OmniJaws \
-    CosmicWalls \
-    Retro \
+    Phonograph \
+    Gcam \
+    RuthlessLauncher \
     Galaxy
 
-# Cosmic-OS App
-PRODUCT_COPY_FILES += \
-    vendor/cos/prebuilt/common/app/Cosmic-OS.apk:system/app/Cosmic-OS/Cosmic-OS.apk
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -149,67 +147,48 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGE_OVERLAYS += \
 	vendor/cos/overlay/common
 
-# COS Versioning
+# SIMPLIX Versioning
 ANDROID_VERSION = 8.1.0
-COSMIC_VERSION_CODENAME = REL
+SIMPLIX_VERSION_CODENAME = REL
 
-ifeq ($(KBUILD_BUILD_USER),Savitar)
-    ifeq ($(KBUILD_BUILD_HOST),Saturn)
-      COS_RELEASE=true
-    endif
-else
-    COS_RELEASE=false
-endif
+SIMPLIX_BUILD_TYPE := OFFICIAL
+SIMPLIX_VERSION_CODENAME := OFFICIAL
 
-ifeq ($(COS_RELEASE),true)
-    ifeq ($(COS_BIWEEKLY),true)
-      COS_BUILD_TYPE := BIWEEKLY
-      COSMIC_VERSION_CODENAME := OFFICIAL
-    else
-      COS_BUILD_TYPE := OFFICIAL
-      COSMIC_VERSION_CODENAME := OFFICIAL
-    endif
-else
-    COS_BUILD_TYPE := UNOFFICIAL
-    COSMIC_VERSION_CODENAME := UNOFFICIAL
-endif
-
-ifeq ($(COS_BETA),true)
-    COS_BUILD_TYPE := BETA
-    COSMIC_VERSION_CODENAME := BETA
+ifeq ($(SIMPLIX_BETA),true)
+    SIMPLIX_BUILD_TYPE := BETA
+    SIMPLIX_VERSION_CODENAME := BETA
 endif
 
 ifneq ($(TARGET_UNOFFICIAL_BUILD_ID),)
-    COS_BUILD_TYPE := $(TARGET_UNOFFICIAL_BUILD_ID)
+    SIMPLIX_BUILD_TYPE := $(TARGET_UNOFFICIAL_BUILD_ID)
 endif
 
-COS_VERSION_NUMBER := 3.2
-COS_CODENAME := Pulsar
-COS_VER := $(COS_VERSION_NUMBER)-$(COS_CODENAME)-$(COS_BUILD_TYPE)
+SIMPLIX_VERSION_NUMBER := 1.7
+SIMPLIX_CODENAME := Dot
+SIMPLIX_VER := $(SIMPLIX_VERSION_NUMBER)-$(SIMPLIX_CODENAME)-$(SIMPLIX_BUILD_TYPE)
 
 # Set all versions
-COS_VERSION := Cosmic-OS_$(COS_CODENAME)_$(COS_BUILD)_$(ANDROID_VERSION)_$(shell date +%Y%m%d)_$(COS_VERSION_NUMBER)-$(COS_BUILD_TYPE)
-COS_MOD_VERSION := Cosmic-OS_$(COS_CODENAME)_$(COS_BUILD)_$(ANDROID_VERSION)_$(shell date +%Y%m%d)_$(COS_VERSION_NUMBER)-$(COS_BUILD_TYPE)
+SIMPLIX_VERSION := Simplix_$(SIMPLIX_CODENAME)_$(SIMPLIX_BUILD)_$(ANDROID_VERSION)_$(shell date +%Y%m%d)_$(SIMPLIX_VERSION_NUMBER)-$(SIMPLIX_BUILD_TYPE)
+SIMPLIX_MOD_VERSION := Simplix_$(SIMPLIX_CODENAME)_$(SIMPLIX_BUILD)_$(ANDROID_VERSION)_$(shell date +%Y%m%d)_$(SIMPLIX_VERSION_NUMBER)-$(SIMPLIX_BUILD_TYPE)
 
 PRODUCT_GENERIC_PROPERTIES += \
     BUILD_DISPLAY_ID=$(BUILD_ID) \
-    ro.cos.version=$(COS_VER) \
-    ro.mod.version=$(COS_VER) \
-    ro.cos.releasetype=$(COS_BUILD_TYPE)
+    ro.simplix.version=$(SIMPLIX_VER) \
+    ro.mod.version=$(SIMPLIX_VER) \
+    ro.simplix.releasetype=$(SIMPLIX_BUILD_TYPE)
 
-ifeq ($(COS_RELEASE),true)
-    CURRENT_DEVICE=$(shell echo "$(TARGET_PRODUCT)" | cut -d'_' -f 2,3)
-    LIST = $(shell curl -s https://raw.githubusercontent.com/Cosmic-OS/platform_vendor_cos/pulsar-release/cos.devices)
-    FOUND_DEVICE =  $(filter $(CURRENT_DEVICE), $(LIST))
-    ifeq ($(FOUND_DEVICE),$(CURRENT_DEVICE))
-      IS_OFFICIAL=true
-    endif
-    ifneq ($(IS_OFFICIAL), true)
-       COS_RELEASE=false
-       $(error Device is not official "$(FOUND)")
-    endif
+#ifeq ($(SIMPLIX_RELEASE),true)
+#    CURRENT_DEVICE=$(shell echo "$(TARGET_PRODUCT)" | cut -d'_' -f 2,3)
+#    LIST = $(shell curl -s https://raw.githubusercontent.com/Cosmic-OS/platform_vendor_cos/pulsar-release/cos.devices)
+#    FOUND_DEVICE =  $(filter $(CURRENT_DEVICE), $(LIST))
+#    ifeq ($(FOUND_DEVICE),$(CURRENT_DEVICE))
+#      IS_OFFICIAL=true
+#    endif
+#    ifneq ($(IS_OFFICIAL), true)
+#       SIMPLIX_RELEASE=false
+#       $(error Device is not official "$(FOUND)")
+#    endif
     PRODUCT_GENERIC_PROPERTIES += \
         persist.ota.romname=$(TARGET_PRODUCT) \
-        persist.ota.version=$(shell date +%Y%m%d) \
-        persist.ota.manifest=https://raw.githubusercontent.com/Cosmic-OS/platform_vendor_ota/pulsar-release/$(shell echo "$(TARGET_PRODUCT)" | cut -d'_' -f 2,3).xml
-endif
+        persist.ota.version=$(shell date +%Y%m%d)
+#endif
