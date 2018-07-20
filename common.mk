@@ -57,6 +57,9 @@ PRODUCT_PACKAGES += \
     Phonograph \
     Gcam \
     RuthlessLauncher \
+    Kiwi \
+    SimpleGallery \
+    SimplixCenter \
     Galaxy
 
 
@@ -163,8 +166,8 @@ ifneq ($(TARGET_UNOFFICIAL_BUILD_ID),)
     SIMPLIX_BUILD_TYPE := $(TARGET_UNOFFICIAL_BUILD_ID)
 endif
 
-SIMPLIX_VERSION_NUMBER := 1.7
-SIMPLIX_CODENAME := Dot
+SIMPLIX_VERSION_NUMBER := 1.7.2
+SIMPLIX_CODENAME := Orange
 SIMPLIX_VER := $(SIMPLIX_VERSION_NUMBER)-$(SIMPLIX_CODENAME)-$(SIMPLIX_BUILD_TYPE)
 
 # Set all versions
