@@ -1,5 +1,6 @@
 #!/bin/bash
-# Copyright (C) 2018 Simplix. Project
+# Copyright (C) 2018 Simplix Project
+# Copyright (C) 2017 CosmicOS Project
 # Copyright (C) 2015 Paranoid Android Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
